@@ -1,0 +1,25 @@
+# ==========================
+# Node.js / React
+# ==========================
+client/node_modules/
+client/dist/
+
+# ==========================
+# ASP.NET Core
+# ==========================
+server/bin/
+server/obj/
+
+# User Secrets
+server/secrets.json
+
+# ==========================
+# Visual Studio Code
+# ==========================
+.vscode/
+
+# ==========================
+# OS Files
+# ==========================
+.DS_Store
+Thumbs.db
