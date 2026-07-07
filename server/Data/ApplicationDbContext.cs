@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    DbSet<Business> Businesses => Set<Business>();
-    DbSet<User> Users => Set<User>();
-    DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Business> Businesses => Set<Business>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 }
