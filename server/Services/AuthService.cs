@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.DTOs;
@@ -83,6 +84,64 @@ public class AuthService : IAuthService
             RefreshToken = refreshToken,
             FullName = user.FullName,
             Email =  user.Email
+        };
+    }
+
+    public async Task<AuthResponseDto> LoginAsync(LoginRequestDto request)
+    {
+        var user = await _dbContext.Users
+        .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+        if(user == null)
+        {
+            throw new KeyNotFoundException("Invalid Credentials");
+        }
+
+        var verifyPassword = _passwordHasher.VerifyPassword(user, user.PasswordHash, request.Password);
+
+        if(verifyPassword == PasswordVerificationResult.Failed)
+        {
+            throw new InvalidOperationException("Invalid Credentials");
+        }
+
+        var accessToken = _jwtService.GenerateAccessToken(user);
+
+        var refreshToken = _jwtService.GenerateRefreshToken();
+
+        var refreshTokenEntity = await _dbContext.RefreshTokens
+        .FirstOrDefaultAsync(r => r.UserId == user.UserId);
+
+        if(refreshTokenEntity != null)
+        {
+            refreshTokenEntity.Token = refreshToken;
+            refreshTokenEntity.CreatedAt = DateTime.UtcNow;
+            refreshTokenEntity.ExpiresAt = DateTime.UtcNow.AddDays(7);
+            refreshTokenEntity.IsRevoked = false;
+
+        }
+        else
+        {
+            refreshTokenEntity = new RefreshToken
+            {
+                RefreshTokenId = Guid.NewGuid(),
+                UserId = user.UserId,
+                Token = refreshToken,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false
+            };
+
+            _dbContext.RefreshTokens.Add(refreshTokenEntity);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        return new AuthResponseDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            FullName = user.FullName,
+            Email = user.Email
         };
     }
 }
