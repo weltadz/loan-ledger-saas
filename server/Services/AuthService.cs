@@ -182,4 +182,19 @@ public class AuthService : IAuthService
             Email = user.Email
         };
     }
+
+    public async Task LogoutAsync(RefreshTokenRequestDto request)
+    {
+        var existingRefreshToken = await _dbContext.RefreshTokens
+        .FirstOrDefaultAsync(r => r.Token == request.RefreshToken);
+
+        if(existingRefreshToken == null || existingRefreshToken.IsRevoked == true || existingRefreshToken.ExpiresAt < DateTime.UtcNow)
+        {
+            throw new KeyNotFoundException("Invalid refresh token");
+        }
+
+        existingRefreshToken.IsRevoked = true;
+
+        await _dbContext.SaveChangesAsync();
+    }
 }

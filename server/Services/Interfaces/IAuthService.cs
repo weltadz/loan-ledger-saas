@@ -9,4 +9,6 @@ public interface IAuthService
     Task<AuthResponseDto> LoginAsync(LoginRequestDto request);
 
     Task<AuthResponseDto> RefreshAccessTokenAsync(RefreshTokenRequestDto request);
+
+    Task LogoutAsync(RefreshTokenRequestDto request);
 }

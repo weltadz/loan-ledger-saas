@@ -39,4 +39,12 @@ public class AuthController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout (RefreshTokenRequestDto request)
+    {
+        await _authService.LogoutAsync(request);
+
+        return Ok();
+    }
 } 
