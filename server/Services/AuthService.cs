@@ -144,4 +144,42 @@ public class AuthService : IAuthService
             Email = user.Email
         };
     }
+
+    public async Task<AuthResponseDto> RefreshAccessTokenAsync(RefreshTokenRequestDto request)
+    {
+        var existingRefreshToken = await _dbContext.RefreshTokens
+        .FirstOrDefaultAsync(r => r.Token == request.RefreshToken);
+
+        if(existingRefreshToken == null || existingRefreshToken.IsRevoked == true || existingRefreshToken.ExpiresAt < DateTime.UtcNow)
+        {
+            throw new KeyNotFoundException("Invalid refresh token");
+        }
+
+        var user = await _dbContext.Users
+        .FirstOrDefaultAsync(u => u.UserId == existingRefreshToken.UserId);
+
+        if(user == null)
+        {
+            throw new KeyNotFoundException("User not found");
+        }
+
+        var accessToken = _jwtService.GenerateAccessToken(user);
+
+        var refreshToken = _jwtService.GenerateRefreshToken();
+
+        existingRefreshToken.Token = refreshToken;
+        existingRefreshToken.CreatedAt = DateTime.UtcNow;
+        existingRefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
+        existingRefreshToken.IsRevoked = false;
+
+        await _dbContext.SaveChangesAsync();
+
+        return new AuthResponseDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            FullName = user.FullName,
+            Email = user.Email
+        };
+    }
 }

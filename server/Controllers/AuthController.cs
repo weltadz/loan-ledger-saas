@@ -29,6 +29,14 @@ public class AuthController : ControllerBase
     {
         var response = await _authService.LoginAsync(request);
 
-        return Ok(new{message = "Login Successfully"});
+        return Ok(response);
     }
-}
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshToken (RefreshTokenRequestDto request)
+    {
+        var response = await _authService.RefreshAccessTokenAsync(request);
+
+        return Ok(response);
+    }
+} 
