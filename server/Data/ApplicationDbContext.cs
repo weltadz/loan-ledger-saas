@@ -12,4 +12,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Business> Businesses => Set<Business>();
     public DbSet<User> Users => Set<User>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+    public DbSet<BusinessSetting> BusinessSettings => Set<BusinessSetting>();
 }

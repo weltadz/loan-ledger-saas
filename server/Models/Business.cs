@@ -31,4 +31,6 @@ public class Business
 
     //Navigation
     public ICollection<User> Users { get; set;} = new List<User>();
+
+    public BusinessSetting BusinessSetting { get; set;} = null!;
 }

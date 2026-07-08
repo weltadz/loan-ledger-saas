@@ -4,7 +4,6 @@ using server.Data;
 using server.DTOs;
 using server.Interface;
 using server.Models;
-using server.Services.Interfaces;
 using server.Services.Interfaces.Security;
 
 
@@ -70,9 +69,23 @@ public class AuthService : IAuthService
             IsRevoked = false
         };
 
+        var businessSetting = new BusinessSetting
+        {
+            BusinessSettingId = Guid.NewGuid(),
+            BusinessId = business.BusinessId,
+            DefaultInterestRate = 5,
+            DefaultPenaltyRate = 2,
+            DefaultLoanTermDays = 30,
+            Currency = "PHP",
+            AllowPartialPayments = true,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
         _dbContext.Businesses.Add(business);
         _dbContext.Users.Add(user);
         _dbContext.RefreshTokens.Add(refreshTokenEntity);
+        _dbContext.BusinessSettings.Add(businessSetting);
 
         await _dbContext.SaveChangesAsync();
 
