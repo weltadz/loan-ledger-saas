@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "7lmac0d2NBI=",
+  "dgSpecHash": "snAGe3xrwlI=",
   "success": true,
   "projectFilePath": "C:\\Users\\Lemuel\\Desktop\\myProject\\LoanLedgerSaaS\\server\\server.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Lemuel\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\Lemuel\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.1\\fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
+    "C:\\Users\\Lemuel\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\Lemuel\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Lemuel\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.9\\microsoft.aspnetcore.authentication.jwtbearer.10.0.9.nupkg.sha512",
     "C:\\Users\\Lemuel\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.3\\microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",

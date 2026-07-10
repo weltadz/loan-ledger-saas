@@ -10,6 +10,8 @@ using System.Text;
 using server.Interface;
 using server.Services;
 using server.Services.Interfaces;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,10 +46,13 @@ builder.Services
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasherService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBusinessSettingsService, BusinessSettingsService>();
+builder.Services.AddScoped<IBusinessService, BusinessService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
